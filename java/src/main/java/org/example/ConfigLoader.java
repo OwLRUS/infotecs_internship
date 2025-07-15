@@ -3,7 +3,6 @@ package org.example;
 import java.util.Properties;
 import java.io.InputStream;
 import java.io.FileOutputStream;
-import java.util.Scanner;
 
 public class ConfigLoader {
     private String host;
@@ -51,96 +50,31 @@ public class ConfigLoader {
         filePath = props.getProperty("path.filePath");
     }
 
-    private static void clearScreen(){
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
-
-    public void change() throws Exception{
-        Scanner scan = new Scanner(System.in);
-        int enter = 1;
-
-        while(enter != 0) {
-            clearScreen();
-            System.out.println("Select what do you want to change:" +
-                    "\n1. Host: " + host +
-                    "\n2. Port: " + port +
-                    "\n3. User: " + user +
-                    "\n4. Password: " + password +
-                    "\n5. Local Directory: " + localDir +
-                    "\n6. File Path: " + filePath +
-                    "\n7. All." +
-                    "\n0. Save and exit.");
-
-            enter = scan.nextInt();
-            scan.nextLine();
-            switch (enter) {
-                case (1):
-                    clearScreen();
-                    System.out.print("Enter Host value: ");
-                    host = scan.nextLine();
-                    break;
-                case (2):
-                    clearScreen();
-                    System.out.print("Enter Port value: ");
-                    port = scan.nextLine();
-                    break;
-                case (3):
-                    clearScreen();
-                    System.out.print("Enter User value: ");
-                    user = scan.nextLine();
-                    break;
-                case (4):
-                    clearScreen();
-                    System.out.print("Enter Password value: ");
-                    password = scan.nextLine();
-                    break;
-                case (5):
-                    clearScreen();
-                    System.out.print("Enter Local directory value: ");
-                    localDir = scan.nextLine();
-                    break;
-                case (6):
-                    clearScreen();
-                    System.out.print("Enter File path value: ");
-                    filePath = scan.nextLine();
-                    break;
-                case (7):
-                    clearScreen();
-                    String isZero;
-                    System.out.print("Enter Host value (0 for save and exit): ");
-                    isZero = scan.nextLine();
-                    if(isZero.equals("0")) break; else host = isZero;
-                    System.out.print("Enter Port value (0 for save and exit): ");
-                    isZero = scan.nextLine();
-                    if(isZero.equals("0")) break; else port = isZero;
-                    System.out.print("Enter User value (0 for save and exit): ");
-                    isZero = scan.nextLine();
-                    if(isZero.equals("0")) break; else user = isZero;
-                    System.out.print("Enter Password value (0 for save and exit): ");
-                    isZero = scan.nextLine();
-                    if(isZero.equals("0")) break; else password = isZero;
-                    System.out.print("Enter Local directory value (0 for save and exit): ");
-                    isZero = scan.nextLine();
-                    if(isZero.equals("0")) break; else localDir = isZero;
-                    System.out.print("Enter File path value (0 for save and exit): ");
-                    isZero = scan.nextLine();
-                    if(isZero.equals("0")) break; else filePath = isZero;
-                    break;
-                case (0):
-                    break;
-                default:
-                    clearScreen();
-                    System.out.println("Unexpected value. Press Enter to try again...");
-                    String skip = scan.nextLine();
-                    break;
-            }
+    public void changeByID(int ID, String value)
+    {
+        switch (ID){
+            case(1):
+                host = value;
+                break;
+            case(2):
+                port = value;
+                break;
+            case(3):
+                user = value;
+                break;
+            case(4):
+                password = value;
+                break;
+            case(5):
+                localDir = value;
+                break;
+            case(6):
+                filePath = value;
+                break;
         }
-
-        save();
     }
 
-    private void save() throws  Exception{
+    public void save() throws  Exception{
         Properties props = new Properties();
 
         props.setProperty("sftp.host", host);
