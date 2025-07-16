@@ -1,5 +1,6 @@
 package org.example;
 
+import java.io.File;
 import java.util.Properties;
 import java.io.InputStream;
 import java.io.FileOutputStream;
@@ -15,17 +16,17 @@ public class ConfigLoader {
     public String getParamById(int ID) throws Exception
     {
         switch (ID){
-            case(1):
+            case MenuKeys.HOST:
                 return host;
-            case(2):
+            case MenuKeys.PORT:
                 return port;
-            case(3):
+            case MenuKeys.USER:
                 return user;
-            case(4):
+            case MenuKeys.PASSWORD:
                 return password;
-            case(5):
+            case MenuKeys.LOCAL_DIR:
                 return localDir;
-            case(6):
+            case MenuKeys.FILE_PATH:
                 return filePath;
             default:
                 throw new RuntimeException("There is no parameter with same ID");
@@ -46,29 +47,31 @@ public class ConfigLoader {
         port = props.getProperty("sftp.port");
         user = props.getProperty("sftp.user");
         password = props.getProperty("sftp.password");
-        localDir = props.getProperty("path.localDir");
         filePath = props.getProperty("path.filePath");
+
+        localDir = new File(ClientSFTP.class.getProtectionDomain().getCodeSource().getLocation().toURI())
+                .getParentFile().getAbsolutePath() + File.separator + "resources";
     }
 
     public void changeByID(int ID, String value)
     {
         switch (ID){
-            case(1):
+            case MenuKeys.HOST:
                 host = value;
                 break;
-            case(2):
+            case MenuKeys.PORT:
                 port = value;
                 break;
-            case(3):
+            case MenuKeys.USER:
                 user = value;
                 break;
-            case(4):
+            case MenuKeys.PASSWORD:
                 password = value;
                 break;
-            case(5):
+            case MenuKeys.LOCAL_DIR:
                 localDir = value;
                 break;
-            case(6):
+            case MenuKeys.FILE_PATH:
                 filePath = value;
                 break;
         }
@@ -81,10 +84,9 @@ public class ConfigLoader {
         props.setProperty("sftp.port", port);
         props.setProperty("sftp.user", user);
         props.setProperty("sftp.password", password);
-        props.setProperty("path.localDir", localDir);
         props.setProperty("path.filePath", filePath);
 
-        try (FileOutputStream out = new FileOutputStream("src/main/resources/config.properties")) {
+        try (FileOutputStream out = new FileOutputStream(localDir + "/config.properties")) {
             props.store(out, "App Configuration");
         }
     }

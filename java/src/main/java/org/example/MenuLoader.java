@@ -4,18 +4,36 @@ import java.util.Scanner;
 
 public class MenuLoader {
     private ConfigLoader cfg;
+
+    private static void clearScreen(){
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+            ProcessBuilder builder;
+
+            if (os.contains("win")) {
+                builder = new ProcessBuilder("cmd", "/c", "cls");
+            } else {
+                builder = new ProcessBuilder("/bin/bash", "-c", "clear");
+            }
+
+            builder.inheritIO().start().waitFor();
+        } catch (Exception e) {
+            System.out.println("Screen cleaning error: " + e.getMessage());
+        }
+    }
+
     public void load(ConfigLoader config) throws Exception{
         cfg = config;
 
         clearScreen();
         System.out.print("=====================SFTP CLIENT=====================\n" +
                            "Do you want to change these parameters? (y/n)" +
-                           "\n1. Host: " + cfg.getParamById(1) +
-                           "\n2. Port: " + cfg.getParamById(2) +
-                           "\n3. User: " + cfg.getParamById(3) +
-                           "\n4. Password: " + cfg.getParamById(4) +
-                           "\n5. Local directory: " + cfg.getParamById(5) +
-                           "\n6. File path: " + cfg.getParamById(6) +
+                           "\n1. Host: " + cfg.getParamById(MenuKeys.HOST) +
+                           "\n2. Port: " + cfg.getParamById(MenuKeys.PORT) +
+                           "\n3. User: " + cfg.getParamById(MenuKeys.USER) +
+                           "\n4. Password: " + cfg.getParamById(MenuKeys.PASSWORD) +
+                           "\n5. Local directory: " + cfg.getParamById(MenuKeys.LOCAL_DIR) +
+                           "\n6. File path: " + cfg.getParamById(MenuKeys.FILE_PATH) +
                            "\n> ");
 
         Scanner scan = new Scanner(System.in);
@@ -35,18 +53,18 @@ public class MenuLoader {
 
     private void change() throws Exception{
         Scanner scan = new Scanner(System.in);
-        int enter = 1;
+        int enter = -1;
 
-        while(enter != 0) {
+        while(enter != MenuKeys.EXIT) {
             clearScreen();
             System.out.print( "====================CONFIG EDITOR====================\n" +
                     "Select what do you want to change:" +
-                    "\n1. Host: " + cfg.getParamById(1) +
-                    "\n2. Port: " + cfg.getParamById(2) +
-                    "\n3. User: " + cfg.getParamById(3) +
-                    "\n4. Password: " + cfg.getParamById(4) +
-                    "\n5. Local Directory: " + cfg.getParamById(5) +
-                    "\n6. File Path: " + cfg.getParamById(6) +
+                    "\n1. Host: " + cfg.getParamById(MenuKeys.HOST) +
+                    "\n2. Port: " + cfg.getParamById(MenuKeys.PORT) +
+                    "\n3. User: " + cfg.getParamById(MenuKeys.USER) +
+                    "\n4. Password: " + cfg.getParamById(MenuKeys.PASSWORD) +
+                    "\n5. Local directory: " + cfg.getParamById(MenuKeys.LOCAL_DIR) +
+                    "\n6. File path: " + cfg.getParamById(MenuKeys.FILE_PATH) +
                     "\n7. All." +
                     "\n0. Save and exit." +
                     "\n> ");
@@ -54,64 +72,64 @@ public class MenuLoader {
             enter = scan.nextInt();
             scan.nextLine();
             switch (enter) {
-                case (1):
+                case MenuKeys.HOST:
                     clearScreen();
                     System.out.print("Enter Host value: ");
-                    cfg.changeByID(1, scan.nextLine());
+                    cfg.changeByID(MenuKeys.HOST, scan.nextLine());
                     break;
-                case (2):
+                case MenuKeys.PORT:
                     clearScreen();
                     System.out.print("Enter Port value: ");
-                    cfg.changeByID(2, scan.nextLine());
+                    cfg.changeByID(MenuKeys.PORT, scan.nextLine());
                     break;
-                case (3):
+                case MenuKeys.USER:
                     clearScreen();
                     System.out.print("Enter User value: ");
-                    cfg.changeByID(3, scan.nextLine());
+                    cfg.changeByID(MenuKeys.USER, scan.nextLine());
                     break;
-                case (4):
+                case MenuKeys.PASSWORD:
                     clearScreen();
                     System.out.print("Enter Password value: ");
-                    cfg.changeByID(4, scan.nextLine());
+                    cfg.changeByID(MenuKeys.PASSWORD, scan.nextLine());
                     break;
-                case (5):
+                case MenuKeys.LOCAL_DIR:
                     clearScreen();
                     System.out.print("Enter Local directory value: ");
-                    cfg.changeByID(5, scan.nextLine());
+                    cfg.changeByID(MenuKeys.LOCAL_DIR, scan.nextLine());
                     break;
-                case (6):
+                case MenuKeys.FILE_PATH:
                     clearScreen();
                     System.out.print("Enter File path value: ");
-                    cfg.changeByID(6, scan.nextLine());
+                    cfg.changeByID(MenuKeys.FILE_PATH, scan.nextLine());
                     break;
-                case (7):
+                case MenuKeys.ALL:
                     clearScreen();
                     String isZero;
                     System.out.print("Enter Host value (0 for save and exit): ");
                     isZero = scan.nextLine();
-                    if(isZero.equals("0")) break; else cfg.changeByID(1, isZero);
+                    if(isZero.equals("0")) break; else cfg.changeByID(MenuKeys.HOST, isZero);
                     System.out.print("Enter Port value (0 for save and exit): ");
                     isZero = scan.nextLine();
-                    if(isZero.equals("0")) break; else cfg.changeByID(2, isZero);
+                    if(isZero.equals("0")) break; else cfg.changeByID(MenuKeys.PORT, isZero);
                     System.out.print("Enter User value (0 for save and exit): ");
                     isZero = scan.nextLine();
-                    if(isZero.equals("0")) break; else cfg.changeByID(3, isZero);
+                    if(isZero.equals("0")) break; else cfg.changeByID(MenuKeys.USER, isZero);
                     System.out.print("Enter Password value (0 for save and exit): ");
                     isZero = scan.nextLine();
-                    if(isZero.equals("0")) break; else cfg.changeByID(4, isZero);
+                    if(isZero.equals("0")) break; else cfg.changeByID(MenuKeys.PASSWORD, isZero);
                     System.out.print("Enter Local directory value (0 for save and exit): ");
                     isZero = scan.nextLine();
-                    if(isZero.equals("0")) break; else cfg.changeByID(5, isZero);
+                    if(isZero.equals("0")) break; else cfg.changeByID(MenuKeys.LOCAL_DIR, isZero);
                     System.out.print("Enter File path value (0 for save and exit): ");
                     isZero = scan.nextLine();
-                    if(isZero.equals("0")) break; else cfg.changeByID(6, isZero);
+                    if(isZero.equals("0")) break; else cfg.changeByID(MenuKeys.FILE_PATH, isZero);
                     break;
-                case (0):
+                case MenuKeys.EXIT:
                     break;
                 default:
                     clearScreen();
                     System.out.println("Unexpected value. Press Enter to try again...");
-                    String skip = scan.nextLine();
+                    String pause = scan.nextLine();
                     break;
             }
         }
@@ -119,22 +137,20 @@ public class MenuLoader {
         cfg.save();
     }
 
-    private static void clearScreen(){
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
-
     public void connection(ClientSFTP client) throws Exception{
         clearScreen();
         System.out.print("=====================CONNECTION=====================\n" +
-                "Connecting to " + cfg.getParamById(1) + ":" + cfg.getParamById(2) + "... ");
+                "Connecting to " + cfg.getParamById(MenuKeys.HOST) + ":" + cfg.getParamById(MenuKeys.PORT) + "... ");
         client.connect(cfg);
         System.out.println("Connected!");
+        System.out.println("Press Enter to continue...");
+        Scanner scan = new Scanner(System.in);
+        String pause = scan.nextLine();
 
         int enter = -1;
-        while(enter != 0) {
+        while(enter != MenuKeys.EXIT) {
             clearScreen();
-            System.out.print("==================HOST " + cfg.getParamById(1) + ":" + cfg.getParamById(2) + "==================\n" +
+            System.out.print("==================HOST " + cfg.getParamById(MenuKeys.HOST) + ":" + cfg.getParamById(MenuKeys.PORT) + "==================\n" +
                     "Menu:" +
                     "\n1. Print domain-ip pair list." +
                     "\n2. Get IP by domain." +
@@ -144,38 +160,43 @@ public class MenuLoader {
                     "\n0. Exit." +
                     "\n> ");
 
-            Scanner scan = new Scanner(System.in);
             enter = scan.nextInt();
             scan.nextLine();
 
             switch (enter)
             {
-                case(1):
+                case MenuKeys.PRINT_LIST:
                     client.list();
+                    System.out.println("Press Enter to continue...");
+                    pause = scan.nextLine();
                     break;
-                case(2):
+                case MenuKeys.GET_IP:
                     clearScreen();
-                    System.out.print("==================HOST " + cfg.getParamById(1) + ":" + cfg.getParamById(2) + "==================\n" +
+                    System.out.print("==================HOST " + cfg.getParamById(MenuKeys.HOST) + ":" + cfg.getParamById(MenuKeys.PORT) + "==================\n" +
                                      "Enter domain: ");
 
                     String domain = scan.nextLine();
                     String rIP = client.findByDomain(domain);
 
                     System.out.println("Result: " + rIP);
+                    System.out.println("Press Enter to continue...");
+                    pause = scan.nextLine();
                     break;
-                case(3):
+                case MenuKeys.GET_DOMAIN:
                     clearScreen();
-                    System.out.print("==================HOST " + cfg.getParamById(1) + ":" + cfg.getParamById(2) + "==================\n" +
+                    System.out.print("==================HOST " + cfg.getParamById(MenuKeys.HOST) + ":" + cfg.getParamById(MenuKeys.PORT) + "==================\n" +
                             "Enter IP: ");
 
                     String IP = scan.nextLine();
                     String rDomain = client.findByIP(IP);
 
                     System.out.println("Result: " + rDomain);
+                    System.out.println("Press Enter to continue...");
+                    pause = scan.nextLine();
                     break;
-                case(4):
+                case MenuKeys.ADD_PAIR:
                     clearScreen();
-                    System.out.print("==================HOST " + cfg.getParamById(1) + ":" + cfg.getParamById(2) + "==================\n" +
+                    System.out.print("==================HOST " + cfg.getParamById(MenuKeys.HOST) + ":" + cfg.getParamById(MenuKeys.PORT) + "==================\n" +
                             "Enter domain: ");
                     String domain_pair = scan.nextLine();
 
@@ -188,10 +209,12 @@ public class MenuLoader {
                     }
 
                     System.out.println(client.addPair(domain_pair, IP_pair));
+                    System.out.println("Press Enter to continue...");
+                    pause = scan.nextLine();
                     break;
-                case(5):
+                case MenuKeys.DELETE_PAIR:
                     clearScreen();
-                    System.out.print("==================HOST " + cfg.getParamById(1) + ":" + cfg.getParamById(2) + "==================\n" +
+                    System.out.print("==================HOST " + cfg.getParamById(MenuKeys.HOST) + ":" + cfg.getParamById(MenuKeys.PORT) + "==================\n" +
                             "Enter domain or IP: ");
                     String subj = scan.nextLine();
 
@@ -200,13 +223,16 @@ public class MenuLoader {
                         else result = client.deleteByDomain(subj);
 
                     System.out.println(result);
+                    System.out.println("Press Enter to continue...");
+                    pause = scan.nextLine();
                     break;
-                case(0):
+                case MenuKeys.EXIT:
+                    clearScreen();
                     break;
                 default:
                     clearScreen();
                     System.out.println("Unexpected value. Press Enter to try again...");
-                    String skip = scan.nextLine();
+                    pause = scan.nextLine();
                     break;
             }
         }

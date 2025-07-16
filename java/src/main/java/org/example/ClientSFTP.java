@@ -18,8 +18,9 @@ public class ClientSFTP {
             jsch = new JSch();
             cfg = config;
 
-            session = jsch.getSession(cfg.getParamById(3), cfg.getParamById(1), Integer.parseInt(cfg.getParamById(2)));
-            session.setPassword(cfg.getParamById(4));
+            session = jsch.getSession(cfg.getParamById(MenuKeys.USER), cfg.getParamById(MenuKeys.HOST),
+                                                                Integer.parseInt(cfg.getParamById(MenuKeys.PORT)));
+            session.setPassword(cfg.getParamById(MenuKeys.PASSWORD));
             session.setConfig("StrictHostKeyChecking", "no");
             session.connect();
 
@@ -28,16 +29,30 @@ public class ClientSFTP {
 
             sftp = (ChannelSftp) channel;
 
-            sftp.get(cfg.getParamById(6), cfg.getParamById(5));
-            json.parseString(cfg.getParamById(5) + "\\" + cfg.getParamById(6));
+            sftp.get(cfg.getParamById(MenuKeys.FILE_PATH), cfg.getParamById(MenuKeys.LOCAL_DIR));
+            json.parseString(cfg.getParamById(MenuKeys.LOCAL_DIR) + "\\" + cfg.getParamById(MenuKeys.FILE_PATH));
         } catch (Exception e) {
+            System.err.println("Cannot connect to remote host. Exiting...");
             e.printStackTrace();
+            System.exit(1);
         }
     }
 
     private static void clearScreen(){
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+            ProcessBuilder builder;
+
+            if (os.contains("win")) {
+                builder = new ProcessBuilder("cmd", "/c", "cls");
+            } else {
+                builder = new ProcessBuilder("/bin/bash", "-c", "clear");
+            }
+
+            builder.inheritIO().start().waitFor();
+        } catch (Exception e) {
+            System.out.println("Screen cleaning error: " + e.getMessage());
+        }
     }
 
     public void list() {
@@ -84,8 +99,9 @@ public class ClientSFTP {
         json.domList.add(domain);
         json.ipList.add(ip);
 
-        json.saveJSON(cfg.getParamById(5) + "\\" + cfg.getParamById(6));
-        sftp.put(cfg.getParamById(5) + "\\" + cfg.getParamById(6), cfg.getParamById(6));
+        json.saveJSON(cfg.getParamById(MenuKeys.LOCAL_DIR) + "\\" + cfg.getParamById(MenuKeys.FILE_PATH));
+        sftp.put(cfg.getParamById(MenuKeys.LOCAL_DIR) + "\\" + cfg.getParamById(MenuKeys.FILE_PATH),
+                                                                                cfg.getParamById(MenuKeys.FILE_PATH));
 
         return "New pair added successfully";
     }
@@ -97,8 +113,9 @@ public class ClientSFTP {
         json.domList.remove(index);
         json.ipList.remove(index);
 
-        json.saveJSON(cfg.getParamById(5) + "\\" + cfg.getParamById(6));
-        sftp.put(cfg.getParamById(5) + "\\" + cfg.getParamById(6), cfg.getParamById(6));
+        json.saveJSON(cfg.getParamById(MenuKeys.LOCAL_DIR) + "\\" + cfg.getParamById(MenuKeys.FILE_PATH));
+        sftp.put(cfg.getParamById(MenuKeys.LOCAL_DIR) + "\\" + cfg.getParamById(MenuKeys.FILE_PATH),
+                                                                                cfg.getParamById(MenuKeys.FILE_PATH));
 
         return "Pair deleted successfully";
     }
@@ -110,8 +127,9 @@ public class ClientSFTP {
         json.domList.remove(index);
         json.ipList.remove(index);
 
-        json.saveJSON(cfg.getParamById(5) + "\\" + cfg.getParamById(6));
-        sftp.put(cfg.getParamById(5) + "\\" + cfg.getParamById(6), cfg.getParamById(6));
+        json.saveJSON(cfg.getParamById(MenuKeys.LOCAL_DIR) + "\\" + cfg.getParamById(MenuKeys.FILE_PATH));
+        sftp.put(cfg.getParamById(MenuKeys.LOCAL_DIR) + "\\" + cfg.getParamById(MenuKeys.FILE_PATH),
+                                                                                cfg.getParamById(MenuKeys.FILE_PATH));
 
         return "Pair deleted successfully";
     }
