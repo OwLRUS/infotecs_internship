@@ -2,6 +2,7 @@ package org.example;
 
 import com.jcraft.jsch.*;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -30,7 +31,7 @@ public class ClientSFTP {
             sftp = (ChannelSftp) channel;
 
             sftp.get(cfg.getParamById(MenuKeys.FILE_PATH), cfg.getParamById(MenuKeys.LOCAL_DIR));
-            json.parseString(cfg.getParamById(MenuKeys.LOCAL_DIR) + "\\" + cfg.getParamById(MenuKeys.FILE_PATH));
+            json.parseString(cfg.getParamById(MenuKeys.LOCAL_DIR) + File.separator + cfg.getParamById(MenuKeys.FILE_PATH));
         } catch (Exception e) {
             System.err.println("Cannot connect to remote host. Exiting...");
             e.printStackTrace();
@@ -67,7 +68,7 @@ public class ClientSFTP {
 
         pairs.sort(Comparator.naturalOrder());
         for(int i = 0; i < size; i++){
-            System.out.println(i + ". " + pairs.get(i));
+            System.out.println((i + 1) + ". " + pairs.get(i));
         }
     }
 
@@ -99,8 +100,8 @@ public class ClientSFTP {
         json.domList.add(domain);
         json.ipList.add(ip);
 
-        json.saveJSON(cfg.getParamById(MenuKeys.LOCAL_DIR) + "\\" + cfg.getParamById(MenuKeys.FILE_PATH));
-        sftp.put(cfg.getParamById(MenuKeys.LOCAL_DIR) + "\\" + cfg.getParamById(MenuKeys.FILE_PATH),
+        json.saveJSON(cfg.getParamById(MenuKeys.LOCAL_DIR) + File.separator + cfg.getParamById(MenuKeys.FILE_PATH));
+        sftp.put(cfg.getParamById(MenuKeys.LOCAL_DIR) + File.separator + cfg.getParamById(MenuKeys.FILE_PATH),
                                                                                 cfg.getParamById(MenuKeys.FILE_PATH));
 
         return "New pair added successfully";
@@ -113,8 +114,8 @@ public class ClientSFTP {
         json.domList.remove(index);
         json.ipList.remove(index);
 
-        json.saveJSON(cfg.getParamById(MenuKeys.LOCAL_DIR) + "\\" + cfg.getParamById(MenuKeys.FILE_PATH));
-        sftp.put(cfg.getParamById(MenuKeys.LOCAL_DIR) + "\\" + cfg.getParamById(MenuKeys.FILE_PATH),
+        json.saveJSON(cfg.getParamById(MenuKeys.LOCAL_DIR) + File.separator + cfg.getParamById(MenuKeys.FILE_PATH));
+        sftp.put(cfg.getParamById(MenuKeys.LOCAL_DIR) + File.separator + cfg.getParamById(MenuKeys.FILE_PATH),
                                                                                 cfg.getParamById(MenuKeys.FILE_PATH));
 
         return "Pair deleted successfully";
@@ -127,8 +128,8 @@ public class ClientSFTP {
         json.domList.remove(index);
         json.ipList.remove(index);
 
-        json.saveJSON(cfg.getParamById(MenuKeys.LOCAL_DIR) + "\\" + cfg.getParamById(MenuKeys.FILE_PATH));
-        sftp.put(cfg.getParamById(MenuKeys.LOCAL_DIR) + "\\" + cfg.getParamById(MenuKeys.FILE_PATH),
+        json.saveJSON(cfg.getParamById(MenuKeys.LOCAL_DIR) + File.separator + cfg.getParamById(MenuKeys.FILE_PATH));
+        sftp.put(cfg.getParamById(MenuKeys.LOCAL_DIR) + File.separator + cfg.getParamById(MenuKeys.FILE_PATH),
                                                                                 cfg.getParamById(MenuKeys.FILE_PATH));
 
         return "Pair deleted successfully";

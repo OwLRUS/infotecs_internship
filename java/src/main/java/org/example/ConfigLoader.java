@@ -86,7 +86,7 @@ public class ConfigLoader {
         props.setProperty("sftp.password", password);
         props.setProperty("path.filePath", filePath);
 
-        try (FileOutputStream out = new FileOutputStream(localDir + "/config.properties")) {
+        try (FileOutputStream out = new FileOutputStream(localDir + File.separator +"config.properties")) {
             props.store(out, "App Configuration");
         }
     }

@@ -196,9 +196,14 @@ public class MenuLoader {
                     break;
                 case MenuKeys.ADD_PAIR:
                     clearScreen();
-                    System.out.print("==================HOST " + cfg.getParamById(MenuKeys.HOST) + ":" + cfg.getParamById(MenuKeys.PORT) + "==================\n" +
-                            "Enter domain: ");
-                    String domain_pair = scan.nextLine();
+                    System.out.print("==================HOST " + cfg.getParamById(MenuKeys.HOST) + ":" + cfg.getParamById(MenuKeys.PORT) + "==================\n");
+                    String domain_pair;
+                    while (true) {
+                        System.out.print("Enter domain: ");
+                        domain_pair = scan.nextLine();
+                        if (domain_pair.matches("^(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\\.(?!-)[A-Za-z0-9-]{1,63}(?<!-))*$")) break;
+                        System.out.println("Wrong input. Enter valid domain!");
+                    }
 
                     String IP_pair;
                     while (true) {
