@@ -1,0 +1,27 @@
+# invalid_domain_list.exp
+
+proc invalid_IP_list {} {
+    safe_expect "Enter.*IP" 1
+    send "256.256.256.256\r"
+    safe_expect "Wrong input. Enter valid.*IP!" 1
+
+    safe_expect "Enter.*IP" 1
+    send "222.222.222\r"
+    safe_expect "Wrong input. Enter valid.*IP!" 1
+
+    safe_expect "Enter.*IP" 1
+    send "222.222.222.222.222\r"
+    safe_expect "Wrong input. Enter valid.*IP!" 1
+
+    safe_expect "Enter.*IP" 1
+    send "222.222.022.222\r"
+    safe_expect "Wrong input. Enter valid.*IP!" 1
+
+    safe_expect "Enter.*IP" 1
+    send "...\r"
+    safe_expect "Wrong input. Enter valid.*IP!" 1
+
+    safe_expect "Enter.*IP" 1
+    send "222.222.222. 22\r"
+    safe_expect "Wrong input. Enter valid.*IP!" 1
+}

@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Properties;
 import java.io.InputStream;
 import java.io.FileOutputStream;
+import java.io.FileInputStream;
 
 public class ConfigLoader {
     private String host;
@@ -36,10 +37,14 @@ public class ConfigLoader {
     public void load() throws Exception {
         Properties props = new Properties();
 
-        try(InputStream in = ConfigLoader.class.getClassLoader().getResourceAsStream("config.properties")) {
-            if(in == null) {
-                throw new RuntimeException("config.properties not found");
-            }
+        File jarDir = new File(ClientSFTP.class.getProtectionDomain()
+                .getCodeSource()
+                .getLocation()
+                .toURI()).getParentFile();
+
+        File configFile = new File(jarDir, "resources/config.properties");
+
+        try (InputStream in = new FileInputStream(configFile)) {
             props.load(in);
         }
 
@@ -49,8 +54,7 @@ public class ConfigLoader {
         password = props.getProperty("sftp.password");
         filePath = props.getProperty("path.filePath");
 
-        localDir = new File(ClientSFTP.class.getProtectionDomain().getCodeSource().getLocation().toURI())
-                .getParentFile().getAbsolutePath() + File.separator + "resources";
+        localDir = new File(jarDir, "resources").getAbsolutePath();
     }
 
     public void changeByID(int ID, String value)

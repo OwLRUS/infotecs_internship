@@ -17,6 +17,7 @@ public class MenuLoader {
             }
 
             builder.inheritIO().start().waitFor();
+            System.out.flush();
         } catch (Exception e) {
             System.out.println("Screen cleaning error: " + e.getMessage());
         }
@@ -71,45 +72,85 @@ public class MenuLoader {
 
             enter = scan.nextInt();
             scan.nextLine();
+            String input;
             switch (enter) {
                 case MenuKeys.HOST:
                     clearScreen();
-                    System.out.print("Enter Host value: ");
-                    cfg.changeByID(MenuKeys.HOST, scan.nextLine());
+                    while (true) {
+                        System.out.print("Enter IP (0 for exit): ");
+                        input = scan.nextLine();
+
+                        if (input.trim().equals("0")) break;
+                        if (input.matches("^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$")) break;
+
+                        System.out.println("Wrong input. Enter valid IP!");
+                    }
+                    if (input.trim().equals("0")) break;
+
+                    cfg.changeByID(MenuKeys.HOST, input);
                     break;
+
                 case MenuKeys.PORT:
                     clearScreen();
-                    System.out.print("Enter Port value: ");
-                    cfg.changeByID(MenuKeys.PORT, scan.nextLine());
+                    while (true) {
+                        System.out.print("Enter Port (0 for exit): ");
+                        input = scan.nextLine();
+
+                        if (input.trim().equals("0")) break;
+                        if (input.matches("^(0|[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$")) break;
+
+                        System.out.println("Wrong input. Enter valid Port!");
+                    }
+                    if (input.trim().equals("0")) break;
+
+                    cfg.changeByID(MenuKeys.PORT, input);
                     break;
+
                 case MenuKeys.USER:
                     clearScreen();
                     System.out.print("Enter User value: ");
                     cfg.changeByID(MenuKeys.USER, scan.nextLine());
                     break;
+
                 case MenuKeys.PASSWORD:
                     clearScreen();
                     System.out.print("Enter Password value: ");
                     cfg.changeByID(MenuKeys.PASSWORD, scan.nextLine());
                     break;
+
                 case MenuKeys.LOCAL_DIR:
                     clearScreen();
                     System.out.print("Enter Local directory value: ");
                     cfg.changeByID(MenuKeys.LOCAL_DIR, scan.nextLine());
                     break;
+
                 case MenuKeys.FILE_PATH:
                     clearScreen();
                     System.out.print("Enter File path value: ");
                     cfg.changeByID(MenuKeys.FILE_PATH, scan.nextLine());
                     break;
+
                 case MenuKeys.ALL:
-                    clearScreen();
                     String isZero;
-                    System.out.print("Enter Host value (0 for save and exit): ");
-                    isZero = scan.nextLine();
+                    while (true) {
+                        System.out.print("Enter IP value (0 for save and exit): ");
+                        isZero = scan.nextLine();
+
+                        if (isZero.trim().equals("0")) break;
+                        if (isZero.matches("^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$")) break;
+
+                        System.out.println("Wrong input. Enter valid IP!");
+                    }
                     if(isZero.equals("0")) break; else cfg.changeByID(MenuKeys.HOST, isZero);
-                    System.out.print("Enter Port value (0 for save and exit): ");
-                    isZero = scan.nextLine();
+                    while (true) {
+                        System.out.print("Enter Port value(0 for save and exit): ");
+                        isZero = scan.nextLine();
+
+                        if (isZero.trim().equals("0")) break;
+                        if (isZero.matches("^(0|[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$")) break;
+
+                        System.out.println("Wrong input. Enter valid Port!");
+                    }
                     if(isZero.equals("0")) break; else cfg.changeByID(MenuKeys.PORT, isZero);
                     System.out.print("Enter User value (0 for save and exit): ");
                     isZero = scan.nextLine();
@@ -124,8 +165,10 @@ public class MenuLoader {
                     isZero = scan.nextLine();
                     if(isZero.equals("0")) break; else cfg.changeByID(MenuKeys.FILE_PATH, isZero);
                     break;
+
                 case MenuKeys.EXIT:
                     break;
+
                 default:
                     clearScreen();
                     System.out.println("Unexpected value. Press Enter to try again...");
@@ -170,70 +213,123 @@ public class MenuLoader {
                     System.out.println("Press Enter to continue...");
                     pause = scan.nextLine();
                     break;
+
                 case MenuKeys.GET_IP:
                     clearScreen();
-                    System.out.print("==================HOST " + cfg.getParamById(MenuKeys.HOST) + ":" + cfg.getParamById(MenuKeys.PORT) + "==================\n" +
-                                     "Enter domain: ");
+                    System.out.print("==================HOST " + cfg.getParamById(MenuKeys.HOST) + ":" + cfg.getParamById(MenuKeys.PORT) + "==================\n");
 
-                    String domain = scan.nextLine();
+                    String domain;
+                    while (true) {
+                        System.out.print("Enter domain (0 for exit): ");
+                        domain = scan.nextLine();
+
+                        if (domain.trim().equals("0")) break;
+                        if (domain.matches("^(?=.{1,253}$)([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,}$")) break;
+
+                        System.out.println("Wrong input. Enter valid domain!");
+                    }
+                    if (domain.trim().equals("0")) break;
+
                     String rIP = client.findByDomain(domain);
 
                     System.out.println("Result: " + rIP);
                     System.out.println("Press Enter to continue...");
                     pause = scan.nextLine();
                     break;
+
                 case MenuKeys.GET_DOMAIN:
                     clearScreen();
-                    System.out.print("==================HOST " + cfg.getParamById(MenuKeys.HOST) + ":" + cfg.getParamById(MenuKeys.PORT) + "==================\n" +
-                            "Enter IP: ");
+                    System.out.print("==================HOST " + cfg.getParamById(MenuKeys.HOST) + ":" + cfg.getParamById(MenuKeys.PORT) + "==================\n");
 
-                    String IP = scan.nextLine();
+                    String IP;
+                    while (true) {
+                        System.out.print("Enter IP (0 for exit): ");
+                        IP = scan.nextLine();
+
+                        if (IP.trim().equals("0")) break;
+                        if (IP.matches("^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$")) break;
+
+                        System.out.println("Wrong input. Enter valid IP!");
+                    }
+                    if (IP.trim().equals("0")) break;
+
                     String rDomain = client.findByIP(IP);
 
                     System.out.println("Result: " + rDomain);
                     System.out.println("Press Enter to continue...");
                     pause = scan.nextLine();
                     break;
+
                 case MenuKeys.ADD_PAIR:
                     clearScreen();
                     System.out.print("==================HOST " + cfg.getParamById(MenuKeys.HOST) + ":" + cfg.getParamById(MenuKeys.PORT) + "==================\n");
+
                     String domain_pair;
                     while (true) {
-                        System.out.print("Enter domain: ");
+                        System.out.print("Enter domain (0 for exit): ");
                         domain_pair = scan.nextLine();
-                        if (domain_pair.matches("^(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\\.(?!-)[A-Za-z0-9-]{1,63}(?<!-))*$")) break;
+
+                        if(domain_pair.trim().equals("0")) break;
+                        if (domain_pair.matches("^(?=.{1,253}$)([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,}$")) break;
+
                         System.out.println("Wrong input. Enter valid domain!");
                     }
+                    if(domain_pair.trim().equals("0")) break;
 
                     String IP_pair;
                     while (true) {
-                        System.out.print("Enter IP: ");
+                        System.out.print("Enter IP (0 for exit): ");
                         IP_pair = scan.nextLine();
-                        if (IP_pair.matches("^((25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]?\\d)(\\.|$)){4}$")) break;
+
+                        if(IP_pair.trim().equals("0")) break;
+                        if (IP_pair.matches("^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$")) break;
+
                         System.out.println("Wrong input. Enter valid IP!");
                     }
+                    if(IP_pair.trim().equals("0")) break;
 
                     System.out.println(client.addPair(domain_pair, IP_pair));
                     System.out.println("Press Enter to continue...");
                     pause = scan.nextLine();
                     break;
+
                 case MenuKeys.DELETE_PAIR:
                     clearScreen();
-                    System.out.print("==================HOST " + cfg.getParamById(MenuKeys.HOST) + ":" + cfg.getParamById(MenuKeys.PORT) + "==================\n" +
-                            "Enter domain or IP: ");
-                    String subj = scan.nextLine();
+                    System.out.print("==================HOST " + cfg.getParamById(MenuKeys.HOST) + ":" + cfg.getParamById(MenuKeys.PORT) + "==================\n");
 
-                    String result;
-                    if(subj.matches("^((25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]?\\d)(\\.|$)){4}$")) result = client.deleteByIP(subj);
-                        else result = client.deleteByDomain(subj);
+                    String subj = new String();
+                    String result = new String();
+
+                    while(true)
+                    {
+                        System.out.print("Enter domain or IP (0 for exit): ");
+                        subj = scan.nextLine();
+
+                        if(subj.matches("^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$")) {
+                            result = client.deleteByIP(subj);
+                            break;
+                        }
+                        else if(subj.matches("^(?=.{1,253}$)([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,}$")) {
+                            result = client.deleteByDomain(subj);
+                            break;
+                        }
+                        else
+                        {
+                            if(subj.trim().equals("0")) break;
+                            System.out.println("Wrong input. Enter valid domain or IP!");
+                        }
+                    }
+                    if(subj.trim().equals("0")) break;
 
                     System.out.println(result);
                     System.out.println("Press Enter to continue...");
                     pause = scan.nextLine();
                     break;
+
                 case MenuKeys.EXIT:
                     clearScreen();
                     break;
+
                 default:
                     clearScreen();
                     System.out.println("Unexpected value. Press Enter to try again...");

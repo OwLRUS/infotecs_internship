@@ -1,0 +1,39 @@
+# invalid_domain_list.exp
+
+proc invalid_domain_list {} {
+    safe_expect "Enter domain"
+    send -- "-skebob.host\r"
+    safe_expect "Wrong input. Enter valid domain"
+
+    safe_expect "Enter domain"
+    send "skebob-.host\r"
+    safe_expect "Wrong input. Enter valid domain"
+
+    safe_expect "Enter domain"
+    send "ske bob.host\r"
+    safe_expect "Wrong input. Enter valid domain"
+
+    safe_expect "Enter domain"
+    send "ske..bob.host\r"
+    safe_expect "Wrong input. Enter valid domain"
+
+    safe_expect "Enter domain"
+    send ".skebob.host\r"
+    safe_expect "Wrong input. Enter valid domain"
+
+    safe_expect "Enter domain"
+    send "skebob.host.\r"
+    safe_expect "Wrong input. Enter valid domain"
+
+    safe_expect "Enter domain"
+    send "ske@bob.host\r"
+    safe_expect "Wrong input. Enter valid domain"
+
+    safe_expect "Enter domain"
+    send "skebob_host\r"
+    safe_expect "Wrong input. Enter valid domain"
+
+    safe_expect "Enter domain"
+    send "skebobskebobskebobskebobskebobskebobskebobskebobskebobskebobskebobskebobskebob.host\r"
+    safe_expect "Wrong input. Enter valid domain"
+}

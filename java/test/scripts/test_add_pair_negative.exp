@@ -1,0 +1,67 @@
+#!/usr/bin/expect -f
+
+source ./utils.exp
+source ./invalid_domain_list.exp
+source ./invalid_IP_list.exp
+
+set timeout 10
+spawn java -jar ./../../infotecs-1.0.jar
+
+safe_expect "Do you want to change these parameters? (y/n)"
+send "n\r"
+
+safe_expect "Connected!"
+send "\r"
+
+safe_expect "Menu:"
+send "5\rtest.com\r\r"
+
+safe_expect "Menu:"
+send "4\r"
+
+safe_expect "Enter domain"
+send "test.com\r"
+safe_expect "Enter IP"
+send "1.1.1.1\r"
+
+safe_expect "New pair added successfully"
+send "\r"
+
+safe_expect "Menu:"
+send "4\r"
+
+safe_expect "Enter domain"
+send "test.com\r"
+safe_expect "Enter IP"
+send "1.1.1.1\r"
+
+safe_expect "This domain is already exist"
+send "\r"
+
+safe_expect "Menu:"
+send "4\r"
+
+safe_expect "Enter domain"
+send "test2.com\r"
+safe_expect "Enter IP"
+send "1.1.1.1\r"
+
+safe_expect "This IP is already exist"
+send "\r"
+
+safe_expect "Menu:"
+send "4\r"
+
+invalid_domain_list
+send "test3.com\r"
+
+invalid_IP_list
+
+safe_expect "Enter.*IP" 1
+send "abc.def.ghi.jkl\r"
+safe_expect "Wrong input. Enter valid.*IP!" 1
+send "0\r"
+
+send "5\rtest2.com\r\r0\r"
+
+expect eof

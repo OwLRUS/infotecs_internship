@@ -1,0 +1,30 @@
+#!/usr/bin/expect -f
+
+source ./utils.exp
+
+set timeout 10
+spawn java -jar ./../../infotecs-1.0.jar
+
+safe_expect "Do you want to change these parameters? (y/n)"
+send "n\r"
+
+safe_expect "Connected!"
+send "\r"
+
+safe_expect "Menu:"
+send "5\r"
+
+safe_expect "Enter domain or IP"
+send "test.com\r"
+
+expect {
+    "Pair deleted successfully" {
+        send "\r0\r"
+    }
+    timeout {
+        send "\r0\r"
+        exit 1
+    }
+}
+
+expect eof

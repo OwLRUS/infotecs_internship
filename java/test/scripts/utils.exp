@@ -1,0 +1,40 @@
+# utils.exp
+proc safe_expect {pattern {is_regex 0}} {
+    if {$is_regex} {
+        expect {
+            -re $pattern {
+                return 0
+            }
+            timeout {
+                puts "Timeout while expecting (regex): '$pattern'"
+                exit 1
+            }
+            eof {
+                puts "Unexpected EOF while expecting (regex): '$pattern'"
+                exit 1
+            }
+            default {
+                puts "Unexpected output while expecting (regex): '$pattern'"
+                exit 1
+            }
+        }
+    } else {
+        expect {
+            $pattern {
+                return 0
+            }
+            timeout {
+                puts "Timeout while expecting: '$pattern'"
+                exit 1
+            }
+            eof {
+                puts "Unexpected EOF while expecting: '$pattern'"
+                exit 1
+            }
+            default {
+                puts "Unexpected output while expecting: '$pattern'"
+                exit 1
+            }
+        }
+    }
+}

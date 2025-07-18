@@ -1,0 +1,29 @@
+#!/usr/bin/expect -f
+
+source ./utils.exp
+source ./invalid_domain_list.exp
+
+set timeout 10
+
+spawn java -jar ./../../infotecs-1.0.jar
+
+safe_expect "Do you want to change these parameters? (y/n)"
+send "n\r"
+
+safe_expect "Connected!"
+send "\r"
+
+safe_expect "Menu:"
+send "2\r"
+
+safe_expect "Enter domain"
+send "skebob.host\r"
+safe_expect "Doesn't find IP by given domain"
+send "\r"
+
+safe_expect "Menu:"
+send "2\r"
+invalid_domain_list
+send "0\r0\r"
+
+expect eof

@@ -1,0 +1,81 @@
+#!/usr/bin/expect -f
+
+source ./utils.exp
+source ./invalid_domain_list.exp
+source ./invalid_IP_list.exp
+
+set timeout 10
+spawn java -jar ./../../infotecs-1.0.jar
+
+safe_expect "Do you want to change these parameters? (y/n)"
+send "y\r"
+
+safe_expect "Select what do you want to change"
+send "1\r"
+
+invalid_IP_list
+send "0\r"
+
+safe_expect "Select what do you want to change"
+send "2\r"
+
+safe_expect "Enter Port"
+send "99999\r"
+safe_expect "Enter valid Port"
+
+safe_expect "Enter Port"
+send "abc\r"
+safe_expect "Enter valid Port"
+
+safe_expect "Enter Port"
+send "022\r"
+safe_expect "Enter valid Port"
+
+safe_expect "Enter Port"
+send "2 2\r"
+safe_expect "Enter valid Port"
+
+safe_expect "Enter Port"
+send "2.2\r"
+safe_expect "Enter valid Port"
+
+safe_expect "Enter Port"
+send "0\r"
+
+safe_expect "Select what do you want to change"
+send "7\r"
+
+invalid_IP_list
+
+safe_expect "Enter.*IP" 1
+send "abc.def.ghi.jkl\r"
+safe_expect "Wrong input. Enter valid.*IP!" 1
+
+send "1.1.1.1\r"
+
+safe_expect "Enter Port"
+send "99999\r"
+safe_expect "Enter valid Port"
+
+safe_expect "Enter Port"
+send "abc\r"
+safe_expect "Enter valid Port"
+
+safe_expect "Enter Port"
+send "022\r"
+safe_expect "Enter valid Port"
+
+safe_expect "Enter Port"
+send "2 2\r"
+safe_expect "Enter valid Port"
+
+safe_expect "Enter Port"
+send "2.2\r"
+safe_expect "Enter valid Port"
+
+safe_expect "Enter Port"
+send "0\r"
+
+safe_expect "Select what do you want to change"
+
+expect eof

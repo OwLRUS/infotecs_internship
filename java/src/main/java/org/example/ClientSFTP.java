@@ -62,6 +62,11 @@ public class ClientSFTP {
         List<String> pairs = new ArrayList<>();
 
         int size = json.domList.size();
+        if(size == 0){
+            System.out.println("File is empty.");
+            return;
+        }
+
         for(int i = 0; i < size; i++){
             pairs.add(json.domList.get(i) + " - " + json.ipList.get(i));
         }
@@ -88,12 +93,12 @@ public class ClientSFTP {
 
     public String addPair(String domain, String ip) throws Exception{
         String isExist = findByDomain(domain);
-        if (isExist.matches("^((25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]?\\d)(\\.|$)){4}$")) {
+        if (isExist.matches("^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$")) {
             return "This domain is already exist. Returning to menu.";
         }
 
         isExist = findByIP(ip);
-        if (isExist.matches("^([a-zA-Z0-9-]+\\\\.)+[a-zA-Z]{2,}$")) {
+        if (isExist.matches("^(?=.{1,253}$)([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,}$")) {
             return "This IP is already exist. Returning to menu.";
         }
 
