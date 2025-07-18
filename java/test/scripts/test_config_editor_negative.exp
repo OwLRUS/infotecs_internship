@@ -76,6 +76,13 @@ safe_expect "Enter valid Port"
 safe_expect "Enter Port"
 send "0\r"
 
-safe_expect "Select what do you want to change"
+expect {
+    "Select what do you want to change" {
+    exit 0
+    }
+    timeout {
+    exit 1
+    }
+}
 
 expect eof
