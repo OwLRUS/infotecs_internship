@@ -3,6 +3,7 @@ package org.example;
 import org.testng.TestNG;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.annotations.BeforeClass;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,6 +15,12 @@ public class Main {
         org.testng.TestNG testng = new org.testng.TestNG();
         testng.setTestClasses(new Class[]{Main.class});
         testng.run();
+    }
+
+    @BeforeClass
+    public void prepareEnvironment() throws IOException, InterruptedException {
+        runScript("chmod", "+x", "prepairing_tests.sh");
+        runScript("./prepairing_tests.sh");
     }
 
     private void runScript(String... command) throws IOException, InterruptedException {
