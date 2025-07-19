@@ -84,13 +84,18 @@ public class ConfigLoader {
     public void save() throws  Exception{
         Properties props = new Properties();
 
+        File jarDir = new File(ClientSFTP.class.getProtectionDomain()
+                .getCodeSource()
+                .getLocation()
+                .toURI()).getParentFile();
+
         props.setProperty("sftp.host", host);
         props.setProperty("sftp.port", port);
         props.setProperty("sftp.user", user);
         props.setProperty("sftp.password", password);
         props.setProperty("path.filePath", filePath);
 
-        try (FileOutputStream out = new FileOutputStream(localDir + File.separator +"config.properties")) {
+        try (FileOutputStream out = new FileOutputStream(jarDir + File.separator +"resources/config.properties")) {
             props.store(out, "App Configuration");
         }
     }
