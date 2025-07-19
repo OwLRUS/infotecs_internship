@@ -8,8 +8,8 @@
 
 ## Задания
 
-- [Задание на позицию "Разработчик C++"](https://github.com/OwLRUS/infotecs_internship/C%2B%2B)
-- [Задание на позицию "Автотестировщик (Java)"](https://github.com/OwLRUS/infotecs_internship/java)
+- [Задание на позицию "Разработчик C++"](https://github.com/OwLRUS/infotecs_internship/tree/main/C%2B%2B)
+- [Задание на позицию "Автотестировщик (Java)"](https://github.com/OwLRUS/infotecs_internship/tree/main/java)
 
 ## Структура проекта
 
