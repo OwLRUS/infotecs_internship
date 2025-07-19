@@ -4,7 +4,7 @@
 
 В данном репозитории представлены реализация клиентского консольного приложения для работы с SFTP-сервером и автотесты, реализованные на базе библиотеки **TestNG** и подготовленных **expect-скриптов**.
 
-В соответствующих директориях описаны инструкции по работе с [клиентом](https://github.com/OwLRUS/infotecs_internship/blob/main/java/client_guide.txt) и запуску [автотестов](https://github.com/OwLRUS/infotecs_internship/tree/main/java/test), по сборке проектов, список и обоснования выполняемых [тестов](https://github.com/OwLRUS/infotecs_internship/tree/main/java/test/scripts), примеры.
+В соответствующих директориях описаны инструкции по работе с [клиентом](https://github.com/OwLRUS/infotecs_internship/blob/main/java/client_guide.txt) и запуску [автотестов](https://github.com/OwLRUS/infotecs_internship/tree/main/java/test), по сборке проектов, список и обоснования выполняемых [тестов](https://github.com/OwLRUS/infotecs_internship/tree/main/java/test/scripts).
 
 ## Зависимости
 
