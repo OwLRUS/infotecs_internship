@@ -14,6 +14,9 @@ public class ClientSFTP {
     private ParserJSON json = new ParserJSON();
     private ConfigLoader cfg;
 
+    private static final String IP_regex = "^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$";
+    private static final String Domain_regex = "^(?=.{1,253}$)([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,}$";
+
     public void connect(ConfigLoader config) throws Exception{
         try{
             jsch = new JSch();
@@ -93,12 +96,12 @@ public class ClientSFTP {
 
     public String addPair(String domain, String ip) throws Exception{
         String isExist = findByDomain(domain);
-        if (isExist.matches("^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$")) {
+        if (isExist.matches(IP_regex)) {
             return "This domain is already exist. Returning to menu.";
         }
 
         isExist = findByIP(ip);
-        if (isExist.matches("^(?=.{1,253}$)([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,}$")) {
+        if (isExist.matches(Domain_regex)) {
             return "This IP is already exist. Returning to menu.";
         }
 

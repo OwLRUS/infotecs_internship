@@ -4,6 +4,9 @@ import java.util.Scanner;
 
 public class MenuLoader {
     private ConfigLoader cfg;
+    private static final String IP_regex = "^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$";
+    private static final String Port_regex = "^(0|[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$";
+    private static final String Domain_regex = "^(?=.{1,253}$)([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,}$";
 
     private static void clearScreen(){
         try {
@@ -81,7 +84,7 @@ public class MenuLoader {
                         input = scan.nextLine();
 
                         if (input.trim().equals("0")) break;
-                        if (input.matches("^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$")) break;
+                        if (input.matches(IP_regex)) break;
 
                         System.out.println("Wrong input. Enter valid IP!");
                     }
@@ -97,7 +100,7 @@ public class MenuLoader {
                         input = scan.nextLine();
 
                         if (input.trim().equals("0")) break;
-                        if (input.matches("^(0|[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$")) break;
+                        if (input.matches(Port_regex)) break;
 
                         System.out.println("Wrong input. Enter valid Port!");
                     }
@@ -137,7 +140,7 @@ public class MenuLoader {
                         isZero = scan.nextLine();
 
                         if (isZero.trim().equals("0")) break;
-                        if (isZero.matches("^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$")) break;
+                        if (isZero.matches(IP_regex)) break;
 
                         System.out.println("Wrong input. Enter valid IP!");
                     }
@@ -147,7 +150,7 @@ public class MenuLoader {
                         isZero = scan.nextLine();
 
                         if (isZero.trim().equals("0")) break;
-                        if (isZero.matches("^(0|[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$")) break;
+                        if (isZero.matches(Port_regex)) break;
 
                         System.out.println("Wrong input. Enter valid Port!");
                     }
@@ -224,7 +227,7 @@ public class MenuLoader {
                         domain = scan.nextLine();
 
                         if (domain.trim().equals("0")) break;
-                        if (domain.matches("^(?=.{1,253}$)([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,}$")) break;
+                        if (domain.matches(Domain_regex)) break;
 
                         System.out.println("Wrong input. Enter valid domain!");
                     }
@@ -247,7 +250,7 @@ public class MenuLoader {
                         IP = scan.nextLine();
 
                         if (IP.trim().equals("0")) break;
-                        if (IP.matches("^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$")) break;
+                        if (IP.matches(IP_regex)) break;
 
                         System.out.println("Wrong input. Enter valid IP!");
                     }
@@ -270,7 +273,7 @@ public class MenuLoader {
                         domain_pair = scan.nextLine();
 
                         if(domain_pair.trim().equals("0")) break;
-                        if (domain_pair.matches("^(?=.{1,253}$)([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,}$")) break;
+                        if (domain_pair.matches(Domain_regex)) break;
 
                         System.out.println("Wrong input. Enter valid domain!");
                     }
@@ -282,7 +285,7 @@ public class MenuLoader {
                         IP_pair = scan.nextLine();
 
                         if(IP_pair.trim().equals("0")) break;
-                        if (IP_pair.matches("^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$")) break;
+                        if (IP_pair.matches(IP_regex)) break;
 
                         System.out.println("Wrong input. Enter valid IP!");
                     }
@@ -305,11 +308,11 @@ public class MenuLoader {
                         System.out.print("Enter domain or IP (0 for exit): ");
                         subj = scan.nextLine();
 
-                        if(subj.matches("^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$")) {
+                        if(subj.matches(IP_regex)) {
                             result = client.deleteByIP(subj);
                             break;
                         }
-                        else if(subj.matches("^(?=.{1,253}$)([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,}$")) {
+                        else if(subj.matches(Domain_regex)) {
                             result = client.deleteByDomain(subj);
                             break;
                         }
